@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]><html class="no-js lt-ie7"><![endif]-->
+<!--[if IE 7]><html class="no-js ie7 lt-ie8"><![endif]-->
+<!--[if IE 8]><html class="no-js ie8 lt-ie9"><![endif]-->
+<!--[if IE 9]><html class="no-js ie9 lt-ie10"><![endif]-->
+<html class="no-js">
+<head>
+  <meta charset="utf-8" />
+  <title>Vue.js Drag And Drop</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+  <style>
+    /* Prevent the text contents of draggable elements from being selectable. */
+    [draggable] {
+      -moz-user-select: none;
+      -khtml-user-select: none;
+      -webkit-user-select: none;
+      user-select: none;
+      /* Required to make elements draggable in old WebKit */
+      -khtml-user-drag: element;
+      -webkit-user-drag: element;
+    }
+    li {
+      color: black;
+    }
+    .dragging {
+      opacity: 0.8;
+      color: #6894D1;
+    }
+    .drag-over {
+      text-decoration: underline;
+    }
+    .drag-enter {
+      color: #C93742;
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="app">
+    <ul>
+      <li v-for="task in tasks" id="{{ $index }}"
+      v-drag-and-drop
+      v-drag-start="handleDragStart"
+      v-drag-over="handleDragOver"
+      v-drag-enter="handleDragEnter"
+      v-drag-leave="handleDragLeave"
+      v-drag-end="handleDragEnd"
+      v-drop="handleDrop"
+      >
+      <input type="checkbox" name="completed[]" value="1" v-bind:checked="task.completed">
+      <strong>{{ task.title }}</strong>
+    </li>
+  </ul>
+  <pre>{{ loggedEvent }}</pre>
+</div>
+<script src="http://cdn.jsdelivr.net/vue/1.0.10/vue.min.js"></script>
+<script src="vue.drag-and-drop.js"></script>
+<script>
+  /* globals Vue */
+  var App = new Vue({
+    el: '#app',
+    data: {
+      loggedEvent: '',
+      tasks: [{"id":96,"title":"Task 8","completed":false},{"id":12,"title":"Task 1","completed":true},{"id":24,"title":"Task 2","completed":false},{"id":36,"title":"Task 3","completed":true},{"id":48,"title":"Task 4","completed":false},{"id":60,"title":"Task 5","completed":true},{"id":72,"title":"Task 6","completed":false},{"id":84,"title":"Task 7","completed":true},{"id":0,"title":"Task 0","completed":false},{"id":108,"title":"Task 9","completed":true}]
+    },
+    methods: {
+      handleDragStart: function(elem) {
+        // console.log('handleDragStart', elem);
+        this.loggedEvent = 'handleDragStart';
+      },
+      handleDragOver: function(elem) {
+        // console.log('handleDragOver', elem);
+        this.loggedEvent = 'handleDragOver';
+      },
+      handleDragEnter: function(elem) {
+        // console.log('handleDragEnter', elem);
+        this.loggedEvent = 'handleDragEnter';
+      },
+      handleDragLeave: function(elem) {
+        // console.log('handleDragLeave', elem);
+        this.loggedEvent = 'handleDragLeave';
+      },
+      handleDragEnd: function(elem) {
+        // console.log('handleDragEnd', elem);
+        this.loggedEvent = 'handleDragEnd';
+      },
+      handleDrop: function(itemOne, itemTwo) {
+        console.log('handleDrop', itemOne.id, itemTwo.id);
+        this.loggedEvent = 'handleDrop';
+        var dummy = this.tasks[itemOne.id];
+        this.tasks.$set(itemOne.id, this.tasks[itemTwo.id]);
+        this.tasks.$set(itemTwo.id, dummy);
+      }
+    }
+  });
+</script>
+</body>
+</html>
