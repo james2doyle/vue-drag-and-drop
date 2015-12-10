@@ -9,6 +9,7 @@ Available through `npm install vue-drag-and-drop` or include as an inline script
 ### Demo
 
 ![demo gif](http://cl.ly/2B3j0g2K412y/Screen%20Recording%202015-12-09%20at%2009.23%20PM.gif)
+![demo gif 2](http://cl.ly/3v2V3w1n3y2D/Screen%20Recording%202015-12-10%20at%2002.36%20PM.gif)
 
 You can load up the `example.html` file here to test the directive.
 
