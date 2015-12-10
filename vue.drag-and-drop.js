@@ -60,7 +60,8 @@ Vue.directive('drag-and-drop', {
       // Don't do anything if dropping the same column we're dragging.
       if (this.vm._dragSrcEl != e.target) {
         if (typeof(this.vm[this.params.vDrop]) === 'function') {
-          this.vm[this.params.vDrop].call(this, this.vm._dragSrcEl, e.target.parentElement);
+          var el = (e.target.draggable) ? e.target : e.target.parentElement;
+          this.vm[this.params.vDrop].call(this, this.vm._dragSrcEl, el);
         }
       }
       return false;

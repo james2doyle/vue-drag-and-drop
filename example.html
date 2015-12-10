@@ -1,9 +1,5 @@
 <!DOCTYPE html>
-<!--[if lt IE 7]><html class="no-js lt-ie7"><![endif]-->
-<!--[if IE 7]><html class="no-js ie7 lt-ie8"><![endif]-->
-<!--[if IE 8]><html class="no-js ie8 lt-ie9"><![endif]-->
-<!--[if IE 9]><html class="no-js ie9 lt-ie10"><![endif]-->
-<html class="no-js">
+<html>
 <head>
   <meta charset="utf-8" />
   <title>Vue.js Drag And Drop</title>
@@ -36,6 +32,7 @@
 </head>
 <body>
   <div class="container" id="app">
+    <h3>Some Tasks</h3>
     <ul>
       <li v-for="task in tasks" id="{{ $index }}"
       v-drag-and-drop
@@ -51,6 +48,10 @@
     </li>
   </ul>
   <pre>{{ loggedEvent }}</pre>
+  <h3>Some Images</h3>
+  <div class="image" v-for="image in images" v-drag-and-drop v-drop="handleImageDrop">
+    <img src="" data-src="{{ image.src }}" data-index="{{ $index }}" title="{{ image.name }}" align="left">
+  </div>
 </div>
 <script src="http://cdn.jsdelivr.net/vue/1.0.10/vue.min.js"></script>
 <script src="vue.drag-and-drop.js"></script>
@@ -60,7 +61,13 @@
     el: '#app',
     data: {
       loggedEvent: '',
-      tasks: [{"id":96,"title":"Task 8","completed":false},{"id":12,"title":"Task 1","completed":true},{"id":24,"title":"Task 2","completed":false},{"id":36,"title":"Task 3","completed":true},{"id":48,"title":"Task 4","completed":false},{"id":60,"title":"Task 5","completed":true},{"id":72,"title":"Task 6","completed":false},{"id":84,"title":"Task 7","completed":true},{"id":0,"title":"Task 0","completed":false},{"id":108,"title":"Task 9","completed":true}]
+      tasks: [{"id":96,"title":"Task 8","completed":false},{"id":12,"title":"Task 1","completed":true},{"id":24,"title":"Task 2","completed":false},{"id":36,"title":"Task 3","completed":true},{"id":48,"title":"Task 4","completed":false},{"id":60,"title":"Task 5","completed":true},{"id":72,"title":"Task 6","completed":false},{"id":84,"title":"Task 7","completed":true},{"id":0,"title":"Task 0","completed":false},{"id":108,"title":"Task 9","completed":true}],
+      images: [{"name":"Image 1","src":"http://placehold.it/100/000000/ffffff"},{"name":"Image 2","src":"http://placehold.it/100/C93742/ffffff"},{"name":"Image 3","src":"http://placehold.it/100/6894D1/ffffff"}]
+    },
+    ready: function() {
+      Array.prototype.slice.call(document.querySelectorAll('.image'), 0).forEach(function(item){
+        item.children[0].src = item.children[0].getAttribute('data-src');
+      });
     },
     methods: {
       handleDragStart: function(elem) {
@@ -89,6 +96,13 @@
         var dummy = this.tasks[itemOne.id];
         this.tasks.$set(itemOne.id, this.tasks[itemTwo.id]);
         this.tasks.$set(itemTwo.id, dummy);
+      },
+      handleImageDrop: function(itemOne, itemTwo) {
+        console.log('handleImageDrop', itemOne.getAttribute('data-index'), itemTwo.getAttribute('data-index'));
+        this.loggedEvent = 'handleImageDrop';
+        var dummy = this.images[itemOne.getAttribute('data-index')];
+        this.images.$set(itemOne.getAttribute('data-index'), this.images[itemTwo.getAttribute('data-index')]);
+        this.images.$set(itemTwo.getAttribute('data-index'), dummy);
       }
     }
   });
