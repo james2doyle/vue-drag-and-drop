@@ -26,14 +26,14 @@ You can load up the `example.html` file here to test the directive.
 Here is how you might typically use this directive:
 
 ```html
-<li v-for="task in tasks" id="{{ $index }}" v-drag-and-drop v-drop="handleDrop">{{ task.title }}</li>
+<li v-for="task in tasks" id="{{ $index }}" v-drag-and-drop drop="handleDrop">{{ task.title }}</li>
 ```
 
 This directive assumes you are using it *inside* of some sort of list of elements.
 
 First, you can see the `id`. In this case, it is being used to inform us of *where in my array of tasks is this item?*.
 
-When the list is changed, `v-drop` is called, and we run `handleDrop` (but we can use any function in our `methods` in the Vue instance), which calls with 2 arguments `(draggedElement, dropppedOnElement)`. This way we can do a swap in our data. For the `example.html`, we use the elements `id` as the index in our data.
+When the list is changed, `drop` is called, and we run `handleDrop` (but we can use any function in our `methods` in the Vue instance), which calls with 2 arguments `(draggedElement, dropppedOnElement)`. This way we can do a swap in our data. For the `example.html`, we use the elements `id` as the index in our data.
 
 Since we get these 2 elements, we can then do a normal array swapping dance, which looks like this:
 
