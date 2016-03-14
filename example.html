@@ -36,12 +36,12 @@
     <ul>
       <li v-for="task in tasks" id="{{ $index }}"
       v-drag-and-drop
-      v-drag-start="handleDragStart"
-      v-drag-over="handleDragOver"
-      v-drag-enter="handleDragEnter"
-      v-drag-leave="handleDragLeave"
-      v-drag-end="handleDragEnd"
-      v-drop="handleDrop"
+      drag-start="handleDragStart"
+      drag-over="handleDragOver"
+      drag-enter="handleDragEnter"
+      drag-leave="handleDragLeave"
+      drag-end="handleDragEnd"
+      drop="handleDrop"
       >
       <input type="checkbox" name="completed[]" value="1" v-bind:checked="task.completed">
       <strong>{{ task.title }}</strong>
@@ -49,11 +49,11 @@
   </ul>
   <pre>{{ loggedEvent }}</pre>
   <h3>Some Images</h3>
-  <div class="image" v-for="image in images" v-drag-and-drop v-drop="handleImageDrop">
+  <div class="image" v-for="image in images" v-drag-and-drop drop="handleImageDrop">
     <img src="" data-src="{{ image.src }}" data-index="{{ $index }}" title="{{ image.name }}" align="left">
   </div>
 </div>
-<script src="http://cdn.jsdelivr.net/vue/1.0.10/vue.min.js"></script>
+<script src="http://cdn.jsdelivr.net/vue/1.0.17/vue.min.js"></script>
 <script src="vue.drag-and-drop.js"></script>
 <script>
   /* globals Vue */
