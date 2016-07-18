@@ -8,6 +8,7 @@
       params: [
       'drag-and-drop',
       'drag-start',
+      'drag',
       'drag-over',
       'drag-enter',
       'drag-leave',
@@ -51,6 +52,11 @@
           }
           e.target.classList.remove('drag-enter');
         }.bind(this);
+        this.handleDrag = function(e) {
+            if (typeof(this.vm[this.params.drag]) === 'function') {
+                this.vm[this.params.drag].call(this, e.target);
+            }
+        }.bind(this);
         this.handleDragEnd = function(e) {
           e.target.classList.remove('dragging', 'drag-over', 'drag-enter');
           if (typeof(this.vm[this.params.dragEnd]) === 'function') {
@@ -76,6 +82,7 @@
         this.el.addEventListener('dragstart', this.handleDragStart, false);
         this.el.addEventListener('dragenter', this.handleDragEnter, false);
         this.el.addEventListener('dragover', this.handleDragOver, false);
+        this.el.addEventListener('drag', this.handleDrag, false);
         this.el.addEventListener('dragleave', this.handleDragLeave, false);
         this.el.addEventListener('drop', this.handleDrop, false);
         this.el.addEventListener('dragend', this.handleDragEnd, false);
@@ -91,6 +98,7 @@
         this.el.removeEventListener('dragenter', this.handleDragEnter);
         this.el.removeEventListener('dragover', this.handleDragOver);
         this.el.removeEventListener('dragleave', this.handleDragLeave);
+        this.el.removeEventListener('drag', this.handleDrag);
       }
     });
   }

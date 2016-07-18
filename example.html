@@ -42,6 +42,7 @@
       drag-leave="handleDragLeave"
       drag-end="handleDragEnd"
       drop="handleDrop"
+      drag="handleDrag"
       >
       <input type="checkbox" name="completed[]" value="1" v-bind:checked="task.completed">
       <strong>{{ task.title }}</strong>
@@ -103,7 +104,11 @@
         var dummy = this.images[itemOne.getAttribute('data-index')];
         this.images.$set(itemOne.getAttribute('data-index'), this.images[itemTwo.getAttribute('data-index')]);
         this.images.$set(itemTwo.getAttribute('data-index'), dummy);
-      }
+      },
+      handleDrag: function(elem) {
+          //console.log('handleDrag', elem);
+          this.loggedEvent = 'handleDrag';
+      },
     }
   });
 </script>
