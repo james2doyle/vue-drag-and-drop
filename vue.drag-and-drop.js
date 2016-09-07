@@ -64,10 +64,11 @@
           }
         }.bind(this);
         this.handleDrop = function(e) {
-//          if (e.stopPropagation) {
-//            // stops the browser from redirecting.
-//            e.stopPropagation();
-//          }
+          e.preventDefault();
+          if (e.stopPropagation) {
+            // stops the browser from redirecting.
+            e.stopPropagation();
+          }
           // Don't do anything if dropping the same column we're dragging.
           if (this.vm._dragSrcEl != e.target) {
             if (typeof(this.vm[this.params.drop]) === 'function') {
