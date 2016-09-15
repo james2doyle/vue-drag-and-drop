@@ -26,7 +26,7 @@ You can load up the `example.html` file here to test the directive.
 Here is how you might typically use this directive:
 
 ```html
-<li v-for="task in tasks" id="{{ $index }}" v-drag-and-drop drop="handleDrop">{{ task.title }}</li>
+<li v-for="task in tasks" id="{{ $index }}" drag-and-drop drop="handleDrop">{{ task.title }}</li>
 ```
 
 This directive assumes you are using it *inside* of some sort of list of elements.
