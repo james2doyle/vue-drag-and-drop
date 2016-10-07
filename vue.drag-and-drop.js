@@ -35,7 +35,7 @@
 
         var draggable = blooeanMaps[this.params.draggable];
         var droppable = blooeanMaps[this.params.droppable];
-        console.log(draggable, droppable)
+        var emptyFn = function(){};
 
         this.handleDragStart = function (e) {
           e.target.classList.add('dragging');
@@ -97,15 +97,26 @@
           }
           return false;
         }.bind(this);
+
+        if(!draggable){
+          this.handleDragStart = emptyFn;
+          this.handleDragEnter = emptyFn;
+          this.handleDrag = emptyFn;
+          this.handleDragLeave = emptyFn;
+          this.handleDragEnd = emptyFn;
+        }
+        if(!droppable){
+          this.handleDrop = emptyFn;
+        }
         // setup the listeners
         draggable && this.el.setAttribute('draggable', 'true');
-        draggable && this.el.addEventListener('dragstart', this.handleDragStart, false);
-        draggable && this.el.addEventListener('dragenter', this.handleDragEnter, false);
-        draggable && this.el.addEventListener('dragover', this.handleDragOver, false);
-        draggable && this.el.addEventListener('drag', this.handleDrag, false);
-        draggable && this.el.addEventListener('dragleave', this.handleDragLeave, false);
-        droppable && this.el.addEventListener('drop', this.handleDrop, false);
-        draggable && this.el.addEventListener('dragend', this.handleDragEnd, false);
+        this.el.addEventListener('dragstart', this.handleDragStart, false);
+        this.el.addEventListener('dragenter', this.handleDragEnter, false);
+        this.el.addEventListener('dragover', this.handleDragOver, false);
+        this.el.addEventListener('drag', this.handleDrag, false);
+        this.el.addEventListener('dragleave', this.handleDragLeave, false);
+        this.el.addEventListener('dragend', this.handleDragEnd, false);
+        this.el.addEventListener('drop', this.handleDrop, false);
       },
       update: function (newValue, oldValue) {
         // console.log(this);
