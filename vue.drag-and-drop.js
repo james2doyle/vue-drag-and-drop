@@ -14,23 +14,24 @@
                 'leave',
                 'end',
                 'drop',
-                'draggable',
-                'droppable'
+                'draggable'
             ],
             
             bind: function (el, binding, vnode) {
-                // use the VM so we only have 1 dragging item per app
-                this._dragSrcEl = null;
+                // binding.modifiers
+                try{
+                    if(binding.value.draggable === undefined){
+                        binding.value.draggable = true;
+                    }
+                    var draggable = binding.value.draggable;
+                } catch(e) {
 
-                if(binding.value.draggable === undefined){
-                    binding.value.draggable = true;
                 }
 
-                var draggable = binding.value.draggable;
-
                 this.handleDragStart = function (e) {
-                    e.target.classList.add('dragging');
-                    this.vm._dragSrcEl = e.target;
+                    e.target.classList.toggle('dragging');
+                    this._dragSrcEl = binding.arg;
+                    this._dragDstEl = e.target;
                     e.dataTransfer.effectAllowed = 'move';
                     
                     // Need to set to something or else drag doesn't start
@@ -48,7 +49,7 @@
                     }
 
                     e.dataTransfer.dropEffect = 'move';
-                    e.target.classList.add('drag-over');
+                    e.target.classList.toggle('drag-over');
                     if (typeof(this.vm[binding.value.over]) === 'function') {
                         this.vm[binding.value.over].call(this, e.target, e);
                     }
@@ -59,7 +60,7 @@
                     if (typeof(this.vm[binding.value.enter]) === 'function') {
                         this.vm[binding.value.enter].call(this, e.target, e);
                     }
-                    e.target.classList.add('drag-enter');
+                    e.target.classList.toggle('drag-enter');
                 }.bind(this);
 
                 this.handleDragLeave = function(e) {
@@ -83,20 +84,13 @@
                 }.bind(this);
 
                 this.handleDrop = function(e) {
-                    e.preventDefault();
-                    if (e.stopPropagation) {
-                        // stops the browser from redirecting.
-                        e.stopPropagation();
-                    }
-
                     // Don't do anything if dropping the same column we're dragging.
-                    if (this.vm._dragSrcEl != e.target) {
+                    if (this._dragSrcEl == binding.arg) {
                         if (typeof(this.vm[binding.value.drop]) === 'function') {
                             var el = (e.target.draggable) ? e.target : e.target.parentElement;
-                            this.vm[binding.value.drop].call(this, this.vm._dragSrcEl, el);
+                            this.vm[binding.value.drop].call(this, this._dragDstEl, el);
                         }
                     }
-
                     return false;
                 }.bind(this);
 
@@ -107,8 +101,8 @@
                 draggable && el.addEventListener('dragover', this.handleDragOver, false);
                 draggable && el.addEventListener('drag', this.handleDrag, false);
                 draggable && el.addEventListener('dragleave', this.handleDragLeave, false);
-                draggable && el.addEventListener('drop', this.handleDrop, false);
                 draggable && el.addEventListener('dragend', this.handleDragEnd, false);
+                draggable && el.addEventListener('drop', this.handleDrop, false);
             },
 
             update: function (newValue, oldValue) {

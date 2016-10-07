@@ -31,13 +31,20 @@
         .box {
             display: flex;
         }
+        .trash {
+            width: 300px;
+            background: #666;
+            color: white;
+            text-align: center;
+            font-weight: 700;
+        }
     </style>
 </head>
 <body>
     <div class="container" id="app">
         <h3>Some Tasks</h3>
         <ul>
-            <li v-for="(task, index) in tasks" v-drag-and-drop="{ start: 'handleDragStart', over: 'handleDragOver', enter: 'handleDragEnter', leave: 'handleDragLeave', end: 'handleDragEnd', drop: 'handleDrop', drag: 'handleDrag' }" :id="index">
+            <li v-for="(task, index) in tasks" v-drag-and-drop:tasks="{ start: 'handleDragStart', over: 'handleDragOver', enter: 'handleDragEnter', leave: 'handleDragLeave', end: 'handleDragEnd', drop: 'handleDrop', drag: 'handleDrag' }" :id="index">
                 <input type="checkbox" name="completed[]" :value="task.id" v-model="task.completed">
                 <strong>{{ task.title }}</strong>
             </li>
@@ -47,14 +54,14 @@
         
         <h3>Some Images</h3>
         <div class="box">
-            <div class="image" v-for="(image, index) in images" v-drag-and-drop="{ drop: 'handleImageDrop' }">
+            <div class="image" v-for="(image, index) in images" v-drag-and-drop:images="{ drop: 'handleImageDrop' }">
                 <img src="" :data-src="image.src" :data-index="index" :title="image.name" align="left">
             </div>
         </div>
 
         <hr>
 
-        <pre>{{ images | json }}</pre>    
+        <pre>{{ tasks | json }}</pre>    
     </div>
 
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/vue/2.0.1/vue.min.js"></script>
@@ -80,6 +87,10 @@
             });
         },        
         methods: {
+            handleRemove: function (elem) {
+                console.log('remove', from, tag, data);
+                return tasks.splice(elem.index, 1);
+            },
             handleDragStart: function(elem) {
                 // console.log('handleDragStart', elem);
                 this.loggedEvent = 'handleDragStart';
@@ -106,13 +117,6 @@
                 var dummy = this.tasks[itemOne.id];
                 this.$set(this.tasks, itemOne.id, this.tasks[itemTwo.id]);
                 this.$set(this.tasks, itemTwo.id, dummy);
-            },
-            handleDropSome: function(itemOne, itemTwo) {
-                console.log('handleDrop', itemOne.id, itemTwo.id);
-                this.loggedEvent = 'handleDrop';
-                var dummy = this.taskas[itemOne.id];
-                this.$set(this.taskas, itemOne.id, this.taskas[itemTwo.id]);
-                this.$set(this.taskas, itemTwo.id, dummy);
             },
             handleImageDrop: function(itemOne, itemTwo) {
                 console.log('handleImageDrop', itemOne.getAttribute('data-index'), itemTwo.getAttribute('data-index'));
