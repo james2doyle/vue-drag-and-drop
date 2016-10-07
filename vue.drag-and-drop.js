@@ -13,12 +13,31 @@
                 'enter',
                 'leave',
                 'end',
-                'drop'
+                'drop',
+                'draggable',
+                'droppable'
             ],
             
             bind: function (el, binding, vnode) {
                 // use the VM so we only have 1 dragging item per app
                 this._dragSrcEl = null;
+
+                if(binding.value.draggable === undefined){
+                    binding.value.draggable = true;
+                }
+                if(binding.value.droppable === undefined){
+                    binding.value.droppable = true;
+                }
+
+                // transfer "false" => false, "true" => true
+                var blooeanMaps = {
+                    true: true,
+                    false: false
+                }
+                var draggable = blooeanMaps[binding.value.draggable];
+                var droppable = blooeanMaps[binding.value.droppable];
+                var emptyFn = function(){};
+
                 this.handleDragStart = function (e) {
                     e.target.classList.add('dragging');
                     this.vm._dragSrcEl = e.target;
@@ -28,7 +47,7 @@
                     e.dataTransfer.setData('text', '*');
 
                     if (typeof(this.vm[binding.value.start]) === 'function') {
-                        this.vm[binding.value.start].call(this, e.target);
+                        this.vm[binding.value.start].call(this, e.target, e);
                     }            
                 }.bind(this);
 
@@ -41,35 +60,35 @@
                     e.dataTransfer.dropEffect = 'move';
                     e.target.classList.add('drag-over');
                     if (typeof(this.vm[binding.value.over]) === 'function') {
-                        this.vm[binding.value.over].call(this, e.target);
+                        this.vm[binding.value.over].call(this, e.target, e);
                     }
                     return false;
                 }.bind(this);
 
                 this.handleDragEnter = function(e) {
                     if (typeof(this.vm[binding.value.enter]) === 'function') {
-                        this.vm[binding.value.enter].call(this, e.target);
+                        this.vm[binding.value.enter].call(this, e.target, e);
                     }
                     e.target.classList.add('drag-enter');
                 }.bind(this);
 
                 this.handleDragLeave = function(e) {
                     if (typeof(this.vm[binding.value.leave]) === 'function') {
-                        this.vm[binding.value.leave].call(this, e.target);
+                        this.vm[binding.value.leave].call(this, e.target, e);
                     }
                     e.target.classList.remove('drag-enter');
                 }.bind(this);
 
                 this.handleDrag = function(e) {
                     if (typeof(this.vm[binding.value.drag]) === 'function') {
-                        this.vm[binding.value.drag].call(this, e.target);
+                        this.vm[binding.value.drag].call(this, e.target, e);
                     }
                 }.bind(this);
 
                 this.handleDragEnd = function(e) {
                     e.target.classList.remove('dragging', 'drag-over', 'drag-enter');
                     if (typeof(this.vm[binding.value.end]) === 'function') {
-                        this.vm[binding.value.end].call(this, e.target);
+                        this.vm[binding.value.end].call(this, e.target, e);
                     }
                 }.bind(this);
 
@@ -90,6 +109,18 @@
 
                     return false;
                 }.bind(this);
+
+                if(!draggable){
+                    this.handleDragStart = emptyFn;
+                    this.handleDragEnter = emptyFn;
+                    this.handleDrag = emptyFn;
+                    this.handleDragLeave = emptyFn;
+                    this.handleDragEnd = emptyFn;
+                }
+
+                if(!droppable){
+                    this.handleDrop = emptyFn;
+                }                
 
                 // setup the listeners
                 el.setAttribute('draggable', 'true');
