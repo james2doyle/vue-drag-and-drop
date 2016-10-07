@@ -28,6 +28,9 @@
         .drag-enter {
             color: #C93742;
         }
+        .box {
+            display: flex;
+        }
     </style>
 </head>
 <body>
@@ -43,9 +46,15 @@
         <pre>{{ loggedEvent }}</pre>
         
         <h3>Some Images</h3>
-        <div class="image" v-for="(image, index) in images" v-drag-and-drop="{ drop: 'handleImageDrop' }">
-            <img src="" :data-src="image.src" :data-index="index" :title="image.name" align="left">
+        <div class="box">
+            <div class="image" v-for="(image, index) in images" v-drag-and-drop="{ drop: 'handleImageDrop' }">
+                <img src="" :data-src="image.src" :data-index="index" :title="image.name" align="left">
+            </div>
         </div>
+
+        <hr>
+
+        <pre>{{ images | json }}
     </div>
 
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/vue/2.0.1/vue.min.js"></script>
