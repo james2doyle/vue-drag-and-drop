@@ -26,7 +26,7 @@ You can load up the `example.html` file here to test the directive.
 Here is how you might typically use this directive:
 
 ```html
-<li v-for="task in tasks" id="{{ $index }}" v-drag-and-drop drop="handleDrop">{{ task.title }}</li>
+<li v-for="(task, index) in tasks" :id="$index" v-drag-and-drop=" { drop: 'handleDrop' }">{{ task.title }}</li>
 ```
 
 This directive assumes you are using it *inside* of some sort of list of elements.
@@ -39,8 +39,8 @@ Since we get these 2 elements, we can then do a normal array swapping dance, whi
 
 ```js
 var placeholder = this.tasks[draggedElement.id];
-this.tasks.$set(draggedElement.id, this.tasks[droppedOnElement.id]);
-this.tasks.$set(droppedOnElement.id, placeholder);
+this.$set(this.tasks, draggedElement.id, this.tasks[droppedOnElement.id]);
+this.$set(this.tasks, droppedOnElement.id, placeholder);
 ```
 
 You can use whatever you want for the `$index` attribute. Maybe you want to use `data-index`? Then just use `draggedElement.getAttribute('data-index')` to grab the index for that item in your data.
