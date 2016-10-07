@@ -91,7 +91,7 @@
           // Don't do anything if dropping the same column we're dragging.
           if (this.vm._dragSrcEl != e.target) {
             if (typeof(this.vm[this.params.drop]) === 'function') {
-              var el = (e.target.draggable) ? e.target : e.target.parentElement;
+              var el = (e.target.draggable || draggable) ? e.target : e.target.parentElement;
               this.vm[this.params.drop].call(this, this.vm._dragSrcEl, el);
             }
           }
