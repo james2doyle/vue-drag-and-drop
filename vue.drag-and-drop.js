@@ -13,11 +13,30 @@
       'drag-enter',
       'drag-leave',
       'drag-end',
-      'drop'
+      'drop',
+      'draggable',
+      'droppable'
       ],
       bind: function () {
         // use the VM so we only have 1 dragging item per app
         this.vm._dragSrcEl = null;
+
+        if(this.params.draggable === undefined){
+          this.params.draggable = true;
+        }
+        if(this.params.droppable === undefined){
+          this.params.droppable = true;
+        }
+        // transfer "false" => false, "true" => true
+        var blooeanMaps = {
+          true: true,
+          false: false
+        }
+
+        var draggable = blooeanMaps[this.params.draggable];
+        var droppable = blooeanMaps[this.params.droppable];
+        console.log(draggable, droppable)
+
         this.handleDragStart = function (e) {
           e.target.classList.add('dragging');
           this.vm._dragSrcEl = e.target;
@@ -79,14 +98,14 @@
           return false;
         }.bind(this);
         // setup the listeners
-        this.el.setAttribute('draggable', 'true');
-        this.el.addEventListener('dragstart', this.handleDragStart, false);
-        this.el.addEventListener('dragenter', this.handleDragEnter, false);
-        this.el.addEventListener('dragover', this.handleDragOver, false);
-        this.el.addEventListener('drag', this.handleDrag, false);
-        this.el.addEventListener('dragleave', this.handleDragLeave, false);
-        this.el.addEventListener('drop', this.handleDrop, false);
-        this.el.addEventListener('dragend', this.handleDragEnd, false);
+        draggable && this.el.setAttribute('draggable', 'true');
+        draggable && this.el.addEventListener('dragstart', this.handleDragStart, false);
+        draggable && this.el.addEventListener('dragenter', this.handleDragEnter, false);
+        draggable && this.el.addEventListener('dragover', this.handleDragOver, false);
+        draggable && this.el.addEventListener('drag', this.handleDrag, false);
+        draggable && this.el.addEventListener('dragleave', this.handleDragLeave, false);
+        droppable && this.el.addEventListener('drop', this.handleDrop, false);
+        draggable && this.el.addEventListener('dragend', this.handleDragEnd, false);
       },
       update: function (newValue, oldValue) {
         // console.log(this);
