@@ -44,7 +44,7 @@
           // Need to set to something or else drag doesn't start
           e.dataTransfer.setData('text', '*');
           if (typeof(this.vm[this.params.dragStart]) === 'function') {
-            this.vm[this.params.dragStart].call(this, e.target);
+            this.vm[this.params.dragStart].call(this, e.target, e);
           }
         }.bind(this);
         this.handleDragOver = function(e) {
@@ -55,31 +55,31 @@
           e.dataTransfer.dropEffect = 'move';
           e.target.classList.add('drag-over');
           if (typeof(this.vm[this.params.dragOver]) === 'function') {
-            this.vm[this.params.dragOver].call(this, e.target);
+            this.vm[this.params.dragOver].call(this, e.target, e);
           }
           return false;
         }.bind(this);
         this.handleDragEnter = function(e) {
           if (typeof(this.vm[this.params.dragEnter]) === 'function') {
-            this.vm[this.params.dragEnter].call(this, e.target);
+            this.vm[this.params.dragEnter].call(this, e.target, e);
           }
           e.target.classList.add('drag-enter');
         }.bind(this);
         this.handleDragLeave = function(e) {
           if (typeof(this.vm[this.params.dragLeave]) === 'function') {
-            this.vm[this.params.dragLeave].call(this, e.target);
+            this.vm[this.params.dragLeave].call(this, e.target, e);
           }
           e.target.classList.remove('drag-enter');
         }.bind(this);
         this.handleDrag = function(e) {
             if (typeof(this.vm[this.params.drag]) === 'function') {
-                this.vm[this.params.drag].call(this, e.target);
+                this.vm[this.params.drag].call(this, e.target, e);
             }
         }.bind(this);
         this.handleDragEnd = function(e) {
           e.target.classList.remove('dragging', 'drag-over', 'drag-enter');
           if (typeof(this.vm[this.params.dragEnd]) === 'function') {
-            this.vm[this.params.dragEnd].call(this, e.target);
+            this.vm[this.params.dragEnd].call(this, e.target, e);
           }
         }.bind(this);
         this.handleDrop = function(e) {
@@ -92,7 +92,7 @@
           if (this.vm._dragSrcEl != e.target) {
             if (typeof(this.vm[this.params.drop]) === 'function') {
               var el = (e.target.draggable || draggable) ? e.target : e.target.parentElement;
-              this.vm[this.params.drop].call(this, this.vm._dragSrcEl, el);
+              this.vm[this.params.drop].call(this, this.vm._dragSrcEl, el, e);
             }
           }
           return false;
