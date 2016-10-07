@@ -54,7 +54,7 @@
 
         <hr>
 
-        <pre>{{ images | json }}
+        <pre>{{ images | json }}</pre>    
     </div>
 
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/vue/2.0.1/vue.min.js"></script>
@@ -106,6 +106,13 @@
                 var dummy = this.tasks[itemOne.id];
                 this.$set(this.tasks, itemOne.id, this.tasks[itemTwo.id]);
                 this.$set(this.tasks, itemTwo.id, dummy);
+            },
+            handleDropSome: function(itemOne, itemTwo) {
+                console.log('handleDrop', itemOne.id, itemTwo.id);
+                this.loggedEvent = 'handleDrop';
+                var dummy = this.taskas[itemOne.id];
+                this.$set(this.taskas, itemOne.id, this.taskas[itemTwo.id]);
+                this.$set(this.taskas, itemTwo.id, dummy);
             },
             handleImageDrop: function(itemOne, itemTwo) {
                 console.log('handleImageDrop', itemOne.getAttribute('data-index'), itemTwo.getAttribute('data-index'));

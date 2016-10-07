@@ -25,18 +25,8 @@
                 if(binding.value.draggable === undefined){
                     binding.value.draggable = true;
                 }
-                if(binding.value.droppable === undefined){
-                    binding.value.droppable = true;
-                }
 
-                // transfer "false" => false, "true" => true
-                var blooeanMaps = {
-                    true: true,
-                    false: false
-                }
-                var draggable = blooeanMaps[binding.value.draggable];
-                var droppable = blooeanMaps[binding.value.droppable];
-                var emptyFn = function(){};
+                var draggable = binding.value.draggable;
 
                 this.handleDragStart = function (e) {
                     e.target.classList.add('dragging');
@@ -110,27 +100,15 @@
                     return false;
                 }.bind(this);
 
-                if(!draggable){
-                    this.handleDragStart = emptyFn;
-                    this.handleDragEnter = emptyFn;
-                    this.handleDrag = emptyFn;
-                    this.handleDragLeave = emptyFn;
-                    this.handleDragEnd = emptyFn;
-                }
-
-                if(!droppable){
-                    this.handleDrop = emptyFn;
-                }                
-
                 // setup the listeners
-                el.setAttribute('draggable', 'true');
-                el.addEventListener('dragstart', this.handleDragStart, false);
-                el.addEventListener('dragenter', this.handleDragEnter, false);
-                el.addEventListener('dragover', this.handleDragOver, false);
-                el.addEventListener('drag', this.handleDrag, false);
-                el.addEventListener('dragleave', this.handleDragLeave, false);
-                el.addEventListener('drop', this.handleDrop, false);
-                el.addEventListener('dragend', this.handleDragEnd, false);
+                draggable && el.setAttribute('draggable', 'true');
+                draggable && el.addEventListener('dragstart', this.handleDragStart, false);
+                draggable && el.addEventListener('dragenter', this.handleDragEnter, false);
+                draggable && el.addEventListener('dragover', this.handleDragOver, false);
+                draggable && el.addEventListener('drag', this.handleDrag, false);
+                draggable && el.addEventListener('dragleave', this.handleDragLeave, false);
+                draggable && el.addEventListener('drop', this.handleDrop, false);
+                draggable && el.addEventListener('dragend', this.handleDragEnd, false);
             },
 
             update: function (newValue, oldValue) {
