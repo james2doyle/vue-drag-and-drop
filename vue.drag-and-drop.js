@@ -95,6 +95,7 @@
               this.vm[this.params.drop].call(this, this.vm._dragSrcEl, el, e);
             }
           }
+          this.vm._dragSrcEl = null;
           return false;
         }.bind(this);
 
