@@ -28,13 +28,13 @@
           this.params.droppable = true;
         }
         // transfer "false" => false, "true" => true
-        var blooeanMaps = {
+        var booleanMaps = {
           true: true,
           false: false
         }
 
-        var draggable = blooeanMaps[this.params.draggable];
-        var droppable = blooeanMaps[this.params.droppable];
+        var draggable = booleanMaps[this.params.draggable];
+        var droppable = booleanMaps[this.params.droppable];
         var emptyFn = function(){};
 
         this.handleDragStart = function (e) {
